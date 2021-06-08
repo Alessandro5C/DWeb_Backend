@@ -50,4 +50,13 @@ public class UsuarioController {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 usuarioService.addIdioma(usuario_id, idioma_id));
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/usuarios/{usuario_id}/language")
+    public NeoAdventuraResponse<UsuarioDto> switchSameLanguage(@PathVariable Long usuario_id)
+            throws NeoAdventuraException{
+        return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
+                usuarioService.switchSameLanguage(usuario_id));
+    }
+
 }

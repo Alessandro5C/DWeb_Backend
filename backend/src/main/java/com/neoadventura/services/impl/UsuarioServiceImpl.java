@@ -90,6 +90,16 @@ public class UsuarioServiceImpl implements UsuarioService {
         return modelMapper.map(saveUsuario, UsuarioDto.class);
     }
 
+    @Override
+    public UsuarioDto switchSameLanguage(Long id) throws NeoAdventuraException {
+        Usuario usuario = getUsuarioEntity(id);
+
+        usuario.setSame_language(!usuario.getSame_language());
+
+        Usuario saveUsuario = this.usuarioRepository.save(usuario);
+        return modelMapper.map(saveUsuario, UsuarioDto.class);
+    }
+
     private Usuario getUsuarioEntity(Long id) throws NeoAdventuraException {
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("NOTFOUND-404", "USUARIO_NOTFOUND-404"));
