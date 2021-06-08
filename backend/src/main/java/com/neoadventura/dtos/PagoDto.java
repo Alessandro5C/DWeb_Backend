@@ -17,4 +17,6 @@ public class PagoDto {
     private Long metodo_id;
     private Long currency_id;
     private Long usuario_id;
+
+    private Long servicio_id;
 }

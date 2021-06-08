@@ -82,11 +82,21 @@ public class Pago {
     )
     private Usuario usuario;
 
-
-    @OneToMany(
-            mappedBy = "pago",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.LAZY
+    @ManyToOne
+    @JoinColumn(
+            name="servicio_id",
+            nullable = false,
+            referencedColumnName = "id",
+            foreignKey = @ForeignKey(
+                    name = "servicio_pago_id"
+            )
     )
-    private List<PagoServicio> pagoServicios = new ArrayList<>();
+    private Servicio servicio;
+
+//    @OneToMany(
+//            mappedBy = "pago",
+//            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+//            fetch = FetchType.LAZY
+//    )
+//    private List<PagoServicio> pagoServicios = new ArrayList<>();
 }
