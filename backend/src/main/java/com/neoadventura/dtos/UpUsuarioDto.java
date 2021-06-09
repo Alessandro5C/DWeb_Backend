@@ -11,7 +11,7 @@ public class UpUsuarioDto {
     private Long id;
     private String nickname;
     private String email;
+    private Long rol_id;
 //    private Boolean suscribed;
 //    private BigDecimal monedero_virtual;
-//    private Long rol_id;
 }

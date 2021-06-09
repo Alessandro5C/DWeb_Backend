@@ -132,15 +132,31 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = getUsuarioEntity(upUsuarioDto.getId());
 
         usuario.setNickname("@" + upUsuarioDto.getNickname());
-        usuario.setEmail(upUsuarioDto.getEmail());
+        if (VerifiedEmail(upUsuarioDto.getEmail()))
+            usuario.setEmail(upUsuarioDto.getEmail());
 
-//        Rol rol = rolRepository.findById(upUsuarioDto.getRol_id())
-//                .orElseThrow(() -> new NotFoundException("NOT-401-1", "ROL_IN_USER_NOT_FOUND"));
-//        usuario.setRol(rol);
+        Rol rol = rolRepository.findById(upUsuarioDto.getRol_id())
+                .orElseThrow(() -> new NotFoundException("NOT-401-1", "ROL_IN_USER_NOT_FOUND"));
+
+        //Requirements to become an Anfitrion
+        if (usuario.getIdiomas().size()>0 || rol.getId()==1)
+            usuario.setRol(rol);
 
         Usuario saveUsuario = this.usuarioRepository.save(usuario);
         return modelMapper.map(saveUsuario, UsuarioDto.class);
     }
+
+    private Boolean VerifiedEmail(String email) {
+        //In this case, it will only accept from Google, Outlook and Hotmail
+        if (email.contains("@")) {
+            String[] var = email.split("@");
+            return (var[1].contentEquals("gmail.com") ||
+                    var[1].contentEquals("outlook.com") ||
+                    var[1].contentEquals("hotmail.com"));
+        }
+        return false;
+    }
+
 
     private Usuario getUsuarioEntity(Long id) throws NeoAdventuraException {
         return usuarioRepository.findById(id)
