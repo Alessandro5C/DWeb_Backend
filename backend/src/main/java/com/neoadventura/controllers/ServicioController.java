@@ -41,4 +41,13 @@ public class ServicioController {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 servicioService.getServicios());
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/servicios/client/{usuarioId}")
+    public NeoAdventuraResponse<List<ServicioDto>> getServicios(@PathVariable Long usuarioId)
+            throws NeoAdventuraException{
+        return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
+                servicioService.getServicios(usuarioId));
+    }
+
 }
