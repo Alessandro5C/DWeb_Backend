@@ -1,10 +1,17 @@
 package com.neoadventura.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table( name="idiomas")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Idioma {
     @Id
     @SequenceGenerator(

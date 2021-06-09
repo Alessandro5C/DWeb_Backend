@@ -45,7 +45,7 @@ public class UsuarioController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/anfitriones/{anfitrionID}")
+    @GetMapping("/anfitriones/{anfitrionId}")
     public NeoAdventuraResponse<AnfitrionDto> getAnfitrionById(@PathVariable Long anfitrionId)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",

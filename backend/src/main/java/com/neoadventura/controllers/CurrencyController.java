@@ -19,7 +19,7 @@ public class CurrencyController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/currencys/{currencyId}")
-    public NeoAdventuraResponse<CurrencyDto> getRolById(@PathVariable Long currencyId)
+    public NeoAdventuraResponse<CurrencyDto> getCurrencyById(@PathVariable Long currencyId)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Succes",String.valueOf(HttpStatus.OK),"OK",
                 currencyService.getCurrencyById(currencyId));
@@ -27,7 +27,7 @@ public class CurrencyController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/currencys")
-    public NeoAdventuraResponse<List<CurrencyDto>> getRoles()
+    public NeoAdventuraResponse<List<CurrencyDto>> getCurrencys()
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Succes",String.valueOf(HttpStatus.OK),"OK",
                 currencyService.getCurrencys());

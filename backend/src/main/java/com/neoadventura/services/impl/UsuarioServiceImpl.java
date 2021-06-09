@@ -2,7 +2,6 @@ package com.neoadventura.services.impl;
 
 import com.neoadventura.dtos.AnfitrionDto;
 import com.neoadventura.dtos.CreateUsuarioDto;
-import com.neoadventura.dtos.ServicioDto;
 import com.neoadventura.dtos.UsuarioDto;
 import com.neoadventura.entities.*;
 import com.neoadventura.exceptions.InternalServerErrorException;
@@ -61,7 +60,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioDto getUsuarioById(Long id) throws NeoAdventuraException {
         Usuario usuario = getUsuarioEntity(id);
-        UsuarioDto usuarioDto = modelMapper.map(getUsuarioEntity(id), UsuarioDto.class);
+        UsuarioDto usuarioDto = modelMapper.map(usuario, UsuarioDto.class);
         usuarioDto.setRol_id(usuario.getRol().getId());
         return usuarioDto;
     }
