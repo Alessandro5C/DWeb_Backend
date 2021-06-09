@@ -2,7 +2,6 @@ package com.neoadventura.services.impl;
 
 import com.neoadventura.dtos.CreateServicioDto;
 import com.neoadventura.dtos.ServicioDto;
-import com.neoadventura.dtos.UsuarioDto;
 import com.neoadventura.entities.*;
 import com.neoadventura.exceptions.InternalServerErrorException;
 import com.neoadventura.exceptions.NeoAdventuraException;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ServicioServiceImpl implements ServicioService {
@@ -105,13 +103,12 @@ public class ServicioServiceImpl implements ServicioService {
 
         List<Servicio> serviciosEntity = servicioRepository.findAll();
         List<ServicioDto> servicioDtos = new ArrayList<>();
-        // = serviciosEntity.stream().map(servicio -> modelMapper.map(servicio, ServicioDto.class))
-//                .collect(Collectors.toList());
+
         Servicio servicio;
-        ServicioDto servicioDto; // = modelMapper.map(getServicioEntity(id), ServicioDto.class);
+        ServicioDto servicioDto;
         for (int i = 0; i < serviciosEntity.size(); i++) {
             servicio = serviciosEntity.get(i);
-            if (FilterByLanguage(servicio.getUsuario(), usuario)) {
+            if (commonLanguage(servicio.getUsuario(), usuario)) {
                 servicioDto = modelMapper.map(servicio, ServicioDto.class);
                 servicioDto.setModalidad_id(servicio.getModalidad().getId());
                 servicioDto.setPlataforma_id(servicio.getPlataforma().getId());
@@ -123,13 +120,12 @@ public class ServicioServiceImpl implements ServicioService {
         return servicioDtos;
     }
 
-    private Boolean FilterByLanguage(Usuario anfitrion, Usuario usuario) {
+    private Boolean commonLanguage(Usuario anfitrion, Usuario usuario) {
         //Verify if it's only visitor or has SameLanguage value as false
-        if (usuario.getId()==0 || !usuario.getSame_language())
+        if (usuario.getId()==0 || !usuario.getSame_language() || usuario.getIdiomas().size()==0)
             return true;
-        //Verify 'anfitrion' and 'usuario' have added languages
-        if (usuario.getIdiomas().size()==0 || anfitrion.getIdiomas().size()==0)
-            return false;
+        //Obligate 'anfitrion' to have an language added
+
         //Check if they had a language in common
         for (Idioma i: anfitrion.getIdiomas())
             for (Idioma j: usuario.getIdiomas())
