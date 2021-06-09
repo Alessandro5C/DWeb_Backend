@@ -96,10 +96,21 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "IDIOMA_NOT_FOUND"));
 
         Usuario usuario = getUsuarioEntity(usuario_id);
-//        Usuario usuario = usuarioRepository.findById(usuario_id)
-//                .orElseThrow(() -> new NotFoundException("NOT-401-1", "USUARIO_NOT_FOUND"));
 
         usuario.addIdioma(idioma);
+
+        Usuario saveUsuario = this.usuarioRepository.save(usuario);
+        return modelMapper.map(saveUsuario, UsuarioDto.class);
+    }
+
+    @Override
+    public UsuarioDto delIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException {
+        Idioma idioma = idiomaRepository.findById(idioma_id)
+                .orElseThrow(() -> new NotFoundException("NOT-401-1", "IDIOMA_NOT_FOUND"));
+
+        Usuario usuario = getUsuarioEntity(usuario_id);
+
+        usuario.delIdioma(idioma);
 
         Usuario saveUsuario = this.usuarioRepository.save(usuario);
         return modelMapper.map(saveUsuario, UsuarioDto.class);

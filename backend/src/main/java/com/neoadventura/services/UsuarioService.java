@@ -17,5 +17,6 @@ public interface UsuarioService {
     List<AnfitrionDto> getAnfitriones() throws NeoAdventuraException;
 
     UsuarioDto addIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException;
+    UsuarioDto delIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException;
     UsuarioDto switchSameLanguage(Long id) throws NeoAdventuraException;
 }

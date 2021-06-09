@@ -156,4 +156,10 @@ public class Usuario {
             this.idiomas.add(idioma);
         }
     }
+
+    public void delIdioma(Idioma idioma){
+        if(idiomas.contains(idioma)) {
+            this.idiomas.remove(idioma);
+        }
+    }
 }
