@@ -14,7 +14,7 @@ public class UsuarioDto {
     private String nickname;
     private String email;
     private Date birth_day;
-    private Date registered;
+//    private Date registered;
     private Boolean suscribed;
     private BigDecimal monedero_virtual;
     private BigDecimal monedero_oferta;

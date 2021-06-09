@@ -6,10 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UsuarioAsAnfitrionDto {
+public class AnfitrionDto {
     private Long id;
     private String name;
     private String nickname;
     private Boolean banned;
-    private Long rol_id;
+//    private Long rol_id;
 }

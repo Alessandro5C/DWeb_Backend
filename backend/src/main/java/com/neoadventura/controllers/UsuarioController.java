@@ -1,6 +1,7 @@
 package com.neoadventura.controllers;
 
 
+import com.neoadventura.dtos.AnfitrionDto;
 import com.neoadventura.dtos.CreateUsuarioDto;
 import com.neoadventura.dtos.UsuarioDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
@@ -37,10 +38,26 @@ public class UsuarioController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/usuarios")
-    public NeoAdventuraResponse<List<UsuarioDto>> getUsuario()
+    public NeoAdventuraResponse<List<UsuarioDto>> getUsuarios()
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 usuarioService.getUsuarios());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/anfitriones/{anfitrionID}")
+    public NeoAdventuraResponse<AnfitrionDto> getAnfitrionById(@PathVariable Long anfitrionId)
+            throws NeoAdventuraException {
+        return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
+                usuarioService.getAnfitrionById(anfitrionId));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/anfitriones")
+    public NeoAdventuraResponse<List<AnfitrionDto>> getAnfitriones()
+            throws NeoAdventuraException{
+        return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
+                usuarioService.getAnfitriones());
     }
 
     @ResponseStatus(HttpStatus.OK)

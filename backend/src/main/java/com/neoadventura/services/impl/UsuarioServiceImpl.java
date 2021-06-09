@@ -1,5 +1,6 @@
 package com.neoadventura.services.impl;
 
+import com.neoadventura.dtos.AnfitrionDto;
 import com.neoadventura.dtos.CreateUsuarioDto;
 import com.neoadventura.dtos.ServicioDto;
 import com.neoadventura.dtos.UsuarioDto;
@@ -77,12 +78,27 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public AnfitrionDto getAnfitrionById(Long id) throws NeoAdventuraException {
+        AnfitrionDto anfitrionDto = modelMapper.map(getUsuarioEntity(id), AnfitrionDto.class);
+        return anfitrionDto;
+    }
+
+    @Override
+    public List<AnfitrionDto> getAnfitriones() throws NeoAdventuraException {
+        List<Usuario> usuariosEntity = usuarioRepository.findAll();
+        List<AnfitrionDto> anfitrionDtos = usuariosEntity.stream().map(usuario -> modelMapper.map(usuario, AnfitrionDto.class))
+                .collect(Collectors.toList());
+        return anfitrionDtos;
+    }
+
+    @Override
     public UsuarioDto addIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException {
         Idioma idioma = idiomaRepository.findById(idioma_id)
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "IDIOMA_NOT_FOUND"));
 
-        Usuario usuario = usuarioRepository.findById(usuario_id)
-                .orElseThrow(() -> new NotFoundException("NOT-401-1", "USUARIO_NOT_FOUND"));
+        Usuario usuario = getUsuarioEntity(usuario_id);
+//        Usuario usuario = usuarioRepository.findById(usuario_id)
+//                .orElseThrow(() -> new NotFoundException("NOT-401-1", "USUARIO_NOT_FOUND"));
 
         usuario.addIdioma(idioma);
 
