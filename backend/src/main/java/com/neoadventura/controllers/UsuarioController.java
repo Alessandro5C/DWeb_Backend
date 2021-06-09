@@ -3,6 +3,7 @@ package com.neoadventura.controllers;
 
 import com.neoadventura.dtos.AnfitrionDto;
 import com.neoadventura.dtos.CreateUsuarioDto;
+import com.neoadventura.dtos.UpUsuarioDto;
 import com.neoadventura.dtos.UsuarioDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
@@ -58,6 +59,14 @@ public class UsuarioController {
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 usuarioService.getAnfitriones());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/usuarios")
+    public NeoAdventuraResponse<UsuarioDto> updateUsuarioInfo(@RequestBody UpUsuarioDto upUsuarioDto)
+            throws NeoAdventuraException{
+        return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
+                usuarioService.updateUsuario(upUsuarioDto));
     }
 
     @ResponseStatus(HttpStatus.OK)

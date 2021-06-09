@@ -2,6 +2,7 @@ package com.neoadventura.services.impl;
 
 import com.neoadventura.dtos.AnfitrionDto;
 import com.neoadventura.dtos.CreateUsuarioDto;
+import com.neoadventura.dtos.UpUsuarioDto;
 import com.neoadventura.dtos.UsuarioDto;
 import com.neoadventura.entities.*;
 import com.neoadventura.exceptions.InternalServerErrorException;
@@ -121,6 +122,21 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = getUsuarioEntity(id);
 
         usuario.setSame_language(!usuario.getSame_language());
+
+        Usuario saveUsuario = this.usuarioRepository.save(usuario);
+        return modelMapper.map(saveUsuario, UsuarioDto.class);
+    }
+
+    @Override
+    public UsuarioDto updateUsuario(UpUsuarioDto upUsuarioDto) throws NeoAdventuraException {
+        Usuario usuario = getUsuarioEntity(upUsuarioDto.getId());
+
+        usuario.setNickname("@" + upUsuarioDto.getNickname());
+        usuario.setEmail(upUsuarioDto.getEmail());
+
+//        Rol rol = rolRepository.findById(upUsuarioDto.getRol_id())
+//                .orElseThrow(() -> new NotFoundException("NOT-401-1", "ROL_IN_USER_NOT_FOUND"));
+//        usuario.setRol(rol);
 
         Usuario saveUsuario = this.usuarioRepository.save(usuario);
         return modelMapper.map(saveUsuario, UsuarioDto.class);

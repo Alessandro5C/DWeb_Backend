@@ -1,9 +1,6 @@
 package com.neoadventura.services;
 
-import com.neoadventura.dtos.AnfitrionDto;
-import com.neoadventura.dtos.CreateUsuarioDto;
-import com.neoadventura.dtos.IdiomaDto;
-import com.neoadventura.dtos.UsuarioDto;
+import com.neoadventura.dtos.*;
 import com.neoadventura.exceptions.NeoAdventuraException;
 
 import java.util.List;
@@ -19,4 +16,6 @@ public interface UsuarioService {
     UsuarioDto addIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException;
     UsuarioDto delIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException;
     UsuarioDto switchSameLanguage(Long id) throws NeoAdventuraException;
+
+    UsuarioDto updateUsuario(UpUsuarioDto upUsuarioDto) throws NeoAdventuraException;
 }

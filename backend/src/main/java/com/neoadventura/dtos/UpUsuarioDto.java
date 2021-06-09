@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class UpdateUsuarioDto {
+public class UpUsuarioDto {
     private Long id;
     private String nickname;
     private String email;
