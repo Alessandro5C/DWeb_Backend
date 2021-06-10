@@ -54,6 +54,6 @@ public class IdiomaServiceImpl implements IdiomaService {
 
     private Idioma getIdiomaEntity(Long id) throws NeoAdventuraException {
         return idiomaRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("NOTFOUND-404", "USUARIO_NOTFOUND-404"));
+                .orElseThrow(() -> new NotFoundException("NOTFOUND-404", "IDIOMA_NOTFOUND-404"));
     }
 }

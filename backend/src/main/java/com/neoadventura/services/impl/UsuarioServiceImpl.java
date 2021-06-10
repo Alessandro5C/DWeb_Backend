@@ -5,6 +5,7 @@ import com.neoadventura.dtos.CreateUsuarioDto;
 import com.neoadventura.dtos.UpUsuarioDto;
 import com.neoadventura.dtos.UsuarioDto;
 import com.neoadventura.entities.*;
+import com.neoadventura.exceptions.FormatException;
 import com.neoadventura.exceptions.InternalServerErrorException;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.exceptions.NotFoundException;
@@ -131,16 +132,19 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioDto updateUsuario(UpUsuarioDto upUsuarioDto) throws NeoAdventuraException {
         Usuario usuario = getUsuarioEntity(upUsuarioDto.getId());
 
-        usuario.setNickname("@" + upUsuarioDto.getNickname());
-        if (VerifiedEmail(upUsuarioDto.getEmail()))
-            usuario.setEmail(upUsuarioDto.getEmail());
-
         Rol rol = rolRepository.findById(upUsuarioDto.getRol_id())
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "ROL_IN_USER_NOT_FOUND"));
+        Boolean is_valid = false;
+        //Requirement to become an Anfitrion
+        if ((usuario.getIdiomas().size()>0 || rol.getId()==1) &&
+                VerifiedEmail(upUsuarioDto.getEmail()))
+            is_valid = true;
 
-        //Requirements to become an Anfitrion
-        if (usuario.getIdiomas().size()>0 || rol.getId()==1)
-            usuario.setRol(rol);
+        if (!is_valid) throw new FormatException("304", "NOT MODIFIED");
+
+        usuario.setNickname("@" + upUsuarioDto.getNickname());
+        usuario.setEmail(upUsuarioDto.getEmail());
+        usuario.setRol(rol);
 
         Usuario saveUsuario = this.usuarioRepository.save(usuario);
         return modelMapper.map(saveUsuario, UsuarioDto.class);

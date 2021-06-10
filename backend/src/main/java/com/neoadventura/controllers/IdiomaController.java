@@ -35,7 +35,7 @@ public class IdiomaController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/idiomas/usuario/{usuarioId}")
-    public NeoAdventuraResponse<List<IdiomaDto>> getIdiomas(@PathVariable Long usuarioId)
+    public NeoAdventuraResponse<List<IdiomaDto>> getIdiomaByUsuarioId(@PathVariable Long usuarioId)
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 idiomaService.getIdiomasByUsuarioId(usuarioId));

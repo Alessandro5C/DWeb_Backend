@@ -3,15 +3,14 @@ package com.neoadventura.services.impl;
 import com.neoadventura.dtos.CreateServicioDto;
 import com.neoadventura.dtos.ServicioDto;
 import com.neoadventura.entities.*;
-import com.neoadventura.exceptions.InternalServerErrorException;
-import com.neoadventura.exceptions.NeoAdventuraException;
-import com.neoadventura.exceptions.NotFoundException;
+import com.neoadventura.exceptions.*;
 import com.neoadventura.repositories.*;
 import com.neoadventura.services.ServicioService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,20 +35,31 @@ public class ServicioServiceImpl implements ServicioService {
 
     @Override
     public ServicioDto CreateServicio(CreateServicioDto createServicioDto) throws NeoAdventuraException {
+        Usuario usuario = usuarioRepository.findById(createServicioDto.getUsuario_id())
+                .orElseThrow(() -> new NotFoundException("NOT-401-1", "USUARIO_NOT_FOUND"));
+
+        if (usuario.getRol().getId() == 1)
+            throw new UnauthorizedException("401", "THIS ACCOUNT IS NOT ANFITRION");
+
         Region region = regionRepository.findById(createServicioDto.getRegion_id())
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "REGION_NOT_FOUND"));
 
         Plataforma plataforma = plataformaRepository.findById(createServicioDto.getPlataforma_id())
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "PLATAFORMA_NOT_FOUND"));
 
-        Usuario usuario = usuarioRepository.findById(createServicioDto.getUsuario_id())
-                .orElseThrow(() -> new NotFoundException("NOT-401-1", "USUARIO_NOT_FOUND"));
-
         Modalidad modalidad = modalidadRepository.findById(createServicioDto.getModalidad_id())
-                .orElseThrow(() -> new NotFoundException("NOT-401-1", "MODALIDA_NOT_FOUND"));
+                .orElseThrow(() -> new NotFoundException("NOT-401-1", "MODALIDAD_NOT_FOUND"));
 
         Servicio servicio = new Servicio();
 
+        Boolean is_valid = false; //Validation section
+        if (createServicioDto.getName().length()>0 && createServicioDto.getDescription().length() > 0 &&
+            createServicioDto.getInit_valid_date().compareTo(usuarioRepository.getNow()) > 0 &&
+            createServicioDto.getEnd_valid_date().compareTo(createServicioDto.getInit_valid_date()) > 0 &&
+            createServicioDto.getPrice().compareTo(BigDecimal.valueOf(1)) > 0)
+            is_valid = true;
+
+        if (!is_valid) throw new FormatException("304", "NOT MODIFIED");
 
         servicio.setName(createServicioDto.getName());
         servicio.setDescription(createServicioDto.getDescription());
@@ -60,7 +70,6 @@ public class ServicioServiceImpl implements ServicioService {
         servicio.setRegion(region);
         servicio.setPlataforma(plataforma);
         servicio.setUsuario(usuario);
-
 
         try {
             servicioRepository.save(servicio);
@@ -84,16 +93,6 @@ public class ServicioServiceImpl implements ServicioService {
     @Override
     public List<ServicioDto> getServicios() throws NeoAdventuraException {
         return getServicios(0L);
-//        List<Servicio> serviciosEntity = servicioRepository.findAll();
-//        List<ServicioDto> servicioDtos = serviciosEntity.stream().map(servicio -> modelMapper.map(servicio, ServicioDto.class))
-//                .collect(Collectors.toList());
-//        for (int i = 0; i < servicioDtos.size(); i++) {
-//            servicioDtos.get(i).setModalidad_id(serviciosEntity.get(i).getModalidad().getId());
-//            servicioDtos.get(i).setPlataforma_id(serviciosEntity.get(i).getPlataforma().getId());
-//            servicioDtos.get(i).setRegion_id(serviciosEntity.get(i).getRegion().getId());
-//            servicioDtos.get(i).setUsuario_id(serviciosEntity.get(i).getUsuario().getId());
-//        }
-//        return servicioDtos;
     }
 
     @Override
@@ -124,7 +123,6 @@ public class ServicioServiceImpl implements ServicioService {
         //Verify if it's only visitor or has SameLanguage value as false
         if (usuario.getId()==0 || !usuario.getSame_language() || usuario.getIdiomas().size()==0)
             return true;
-        //Obligate 'anfitrion' to have an language added
 
         //Check if they had a language in common
         for (Idioma i: anfitrion.getIdiomas())
