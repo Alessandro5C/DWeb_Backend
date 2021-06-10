@@ -1,11 +1,9 @@
 package com.neoadventura.controllers;
 
-import com.neoadventura.dtos.PlataformaDto;
-import com.neoadventura.dtos.RegionDto;
+import com.neoadventura.dtos.VwPlataformaDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.PlataformaService;
-import com.neoadventura.services.RegionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +19,7 @@ public class PlataformaController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/plataformas/{plataformaId}")
-    public NeoAdventuraResponse<PlataformaDto> getPlataformaById(@PathVariable Long plataformaId)
+    public NeoAdventuraResponse<VwPlataformaDto> getPlataformaById(@PathVariable Long plataformaId)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 plataformaService.getPlataformaById(plataformaId));
@@ -29,7 +27,7 @@ public class PlataformaController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/plataformas")
-    public NeoAdventuraResponse<List<PlataformaDto>> getPlataforma()
+    public NeoAdventuraResponse<List<VwPlataformaDto>> getPlataforma()
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 plataformaService.getPlataformas());

@@ -1,11 +1,11 @@
 package com.neoadventura.services;
 
-import com.neoadventura.dtos.ModalidadDto;
+import com.neoadventura.dtos.VwModalidadDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 
 import java.util.List;
 
 public interface ModalidadService {
-    List<ModalidadDto> getModalidades() throws NeoAdventuraException;
-    ModalidadDto getModalidadById(Long id) throws NeoAdventuraException;
+    List<VwModalidadDto> getModalidades() throws NeoAdventuraException;
+    VwModalidadDto getModalidadById(Long id) throws NeoAdventuraException;
 }

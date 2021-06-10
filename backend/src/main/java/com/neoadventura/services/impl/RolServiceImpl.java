@@ -1,6 +1,6 @@
 package com.neoadventura.services.impl;
 
-import com.neoadventura.dtos.RolDto;
+import com.neoadventura.dtos.VwRolDto;
 import com.neoadventura.entities.Rol;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.exceptions.NotFoundException;
@@ -22,15 +22,15 @@ public class RolServiceImpl implements RolService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public RolDto getRolById(Long id) throws NeoAdventuraException {
-        return modelMapper.map(getRolEntityById(id), RolDto.class);
+    public VwRolDto getRolById(Long id) throws NeoAdventuraException {
+        return modelMapper.map(getRolEntityById(id), VwRolDto.class);
     }
 
     @Override
-    public List<RolDto> getRoles() throws NeoAdventuraException {
+    public List<VwRolDto> getRoles() throws NeoAdventuraException {
         List<Rol> rolesEntity = rolRepository.findAll();
 
-        return rolesEntity.stream().map(rol -> modelMapper.map(rol, RolDto.class))
+        return rolesEntity.stream().map(rol -> modelMapper.map(rol, VwRolDto.class))
                 .collect(Collectors.toList());
     }
 

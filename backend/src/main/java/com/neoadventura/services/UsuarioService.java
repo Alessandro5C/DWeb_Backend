@@ -6,16 +6,16 @@ import com.neoadventura.exceptions.NeoAdventuraException;
 import java.util.List;
 
 public interface UsuarioService {
-    UsuarioDto CreateUsuario(CreateUsuarioDto usuarioDto) throws NeoAdventuraException;
-    UsuarioDto getUsuarioById(Long id) throws NeoAdventuraException;
-    List<UsuarioDto> getUsuarios() throws NeoAdventuraException;
+    VwUsuarioDto CreateUsuario(CrUsuarioDto usuarioDto) throws NeoAdventuraException;
+    VwUsuarioDto getUsuarioById(Long id) throws NeoAdventuraException;
+    List<VwUsuarioDto> getUsuarios() throws NeoAdventuraException;
 
-    AnfitrionDto getAnfitrionById(Long id) throws NeoAdventuraException;
-    List<AnfitrionDto> getAnfitriones() throws NeoAdventuraException;
+    VwAnfitrionDto getAnfitrionById(Long id) throws NeoAdventuraException;
+    List<VwAnfitrionDto> getAnfitriones() throws NeoAdventuraException;
 
-    UsuarioDto addIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException;
-    UsuarioDto delIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException;
-    UsuarioDto switchSameLanguage(Long id) throws NeoAdventuraException;
+    VwUsuarioDto addIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException;
+    VwUsuarioDto delIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException;
+    VwUsuarioDto switchSameLanguage(Long id) throws NeoAdventuraException;
 
-    UsuarioDto updateUsuario(UpUsuarioDto upUsuarioDto) throws NeoAdventuraException;
+    VwUsuarioDto updateUsuario(UpUsuarioDto upUsuarioDto) throws NeoAdventuraException;
 }

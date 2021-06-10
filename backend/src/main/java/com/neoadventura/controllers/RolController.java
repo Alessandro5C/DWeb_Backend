@@ -1,6 +1,6 @@
 package com.neoadventura.controllers;
 
-import com.neoadventura.dtos.RolDto;
+import com.neoadventura.dtos.VwRolDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.RolService;
@@ -19,7 +19,7 @@ public class RolController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/roles/{rolId}")
-    public NeoAdventuraResponse<RolDto> getRolById(@PathVariable Long rolId)
+    public NeoAdventuraResponse<VwRolDto> getRolById(@PathVariable Long rolId)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Succes",String.valueOf(HttpStatus.OK),"OK",
                 rolService.getRolById(rolId));
@@ -27,7 +27,7 @@ public class RolController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/roles")
-    public NeoAdventuraResponse<List<RolDto>> getRoles()
+    public NeoAdventuraResponse<List<VwRolDto>> getRoles()
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Succes",String.valueOf(HttpStatus.OK),"OK",
                 rolService.getRoles());

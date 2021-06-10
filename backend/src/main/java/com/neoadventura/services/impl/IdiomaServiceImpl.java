@@ -1,6 +1,6 @@
 package com.neoadventura.services.impl;
 
-import com.neoadventura.dtos.IdiomaDto;
+import com.neoadventura.dtos.VwIdiomaDto;
 import com.neoadventura.entities.Idioma;
 import com.neoadventura.entities.Usuario;
 import com.neoadventura.exceptions.NeoAdventuraException;
@@ -26,25 +26,25 @@ public class IdiomaServiceImpl implements IdiomaService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public IdiomaDto getIdiomaById(Long id) throws NeoAdventuraException {
-        IdiomaDto idiomaDto = modelMapper.map(getIdiomaEntity(id), IdiomaDto.class);
-        return idiomaDto;
+    public VwIdiomaDto getIdiomaById(Long id) throws NeoAdventuraException {
+        VwIdiomaDto vwIdiomaDto = modelMapper.map(getIdiomaEntity(id), VwIdiomaDto.class);
+        return vwIdiomaDto;
     }
 
     @Override
-    public List<IdiomaDto> getIdiomas() throws NeoAdventuraException {
+    public List<VwIdiomaDto> getIdiomas() throws NeoAdventuraException {
         List<Idioma> idiomasEntity = idiomaRepository.findAll();
-        List<IdiomaDto> idiomaDtos = idiomasEntity.stream().map(idioma -> modelMapper.map(idioma, IdiomaDto.class))
+        List<VwIdiomaDto> vwIdiomaDtos = idiomasEntity.stream().map(idioma -> modelMapper.map(idioma, VwIdiomaDto.class))
                 .collect(Collectors.toList());
-        return idiomaDtos;
+        return vwIdiomaDtos;
     }
 
     @Override
-    public List<IdiomaDto> getIdiomasByUsuarioId(Long usuario_id) throws NeoAdventuraException {
+    public List<VwIdiomaDto> getIdiomasByUsuarioId(Long usuario_id) throws NeoAdventuraException {
         List<Idioma> idiomasEntity = idiomaRepository.findAllByUsuario(getUsuarioEntity(usuario_id));
-        List<IdiomaDto> idiomaDtos = idiomasEntity.stream().map(idioma -> modelMapper.map(idioma, IdiomaDto.class))
+        List<VwIdiomaDto> vwIdiomaDtos = idiomasEntity.stream().map(idioma -> modelMapper.map(idioma, VwIdiomaDto.class))
                 .collect(Collectors.toList());
-        return idiomaDtos;
+        return vwIdiomaDtos;
     }
 
     private Usuario getUsuarioEntity(Long id) throws NeoAdventuraException {

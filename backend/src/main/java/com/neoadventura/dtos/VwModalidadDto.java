@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CurrencyDto {
+public class VwModalidadDto {
     private Long id;
     private String name;
 

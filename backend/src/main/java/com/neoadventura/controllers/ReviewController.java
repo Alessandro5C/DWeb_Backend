@@ -1,8 +1,7 @@
 package com.neoadventura.controllers;
 
-import com.neoadventura.dtos.CreateReviewDto;
-import com.neoadventura.dtos.CreateUsuarioDto;
-import com.neoadventura.dtos.ReviewDto;
+import com.neoadventura.dtos.CrReviewDto;
+import com.neoadventura.dtos.VwReviewDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.ReviewService;
@@ -21,10 +20,10 @@ public class ReviewController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/reviews")
-    public NeoAdventuraResponse<ReviewDto> createReview(@RequestBody CreateReviewDto createReviewDto)
+    public NeoAdventuraResponse<VwReviewDto> createReview(@RequestBody CrReviewDto crReviewDto)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK),
-                "OK", reviewService.CreateReview(createReviewDto));
+                "OK", reviewService.CreateReview(crReviewDto));
     }
 
     /*
@@ -39,7 +38,7 @@ public class ReviewController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/reviews")
-    public NeoAdventuraResponse<List<ReviewDto>> getReviews()
+    public NeoAdventuraResponse<List<VwReviewDto>> getReviews()
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 reviewService.getReviews());

@@ -1,7 +1,7 @@
 package com.neoadventura.controllers;
 
-import com.neoadventura.dtos.CreateServicioDto;
-import com.neoadventura.dtos.ServicioDto;
+import com.neoadventura.dtos.CrServicioDto;
+import com.neoadventura.dtos.VwServicioDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.ServicioService;
@@ -20,15 +20,15 @@ public class ServicioController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/servicios")
-    public NeoAdventuraResponse<ServicioDto> createServicio(@RequestBody CreateServicioDto createServicioDto)
+    public NeoAdventuraResponse<VwServicioDto> createServicio(@RequestBody CrServicioDto crServicioDto)
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK),
-                "OK", servicioService.CreateServicio(createServicioDto));
+                "OK", servicioService.CreateServicio(crServicioDto));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/servicios/{servicioId}")
-    public NeoAdventuraResponse<ServicioDto> getServicioById(@PathVariable Long servicioId)
+    public NeoAdventuraResponse<VwServicioDto> getServicioById(@PathVariable Long servicioId)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 servicioService.getServicioById(servicioId));
@@ -36,7 +36,7 @@ public class ServicioController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/servicios")
-    public NeoAdventuraResponse<List<ServicioDto>> getServicios()
+    public NeoAdventuraResponse<List<VwServicioDto>> getServicios()
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 servicioService.getServicios());
@@ -44,7 +44,7 @@ public class ServicioController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/servicios/client/{usuarioId}")
-    public NeoAdventuraResponse<List<ServicioDto>> getServicios(@PathVariable Long usuarioId)
+    public NeoAdventuraResponse<List<VwServicioDto>> getServiciosByAnfitrion(@PathVariable Long usuarioId)
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 servicioService.getServicios(usuarioId));

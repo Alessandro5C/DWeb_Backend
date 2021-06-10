@@ -1,6 +1,6 @@
 package com.neoadventura.services.impl;
 
-import com.neoadventura.dtos.MetodoDto;
+import com.neoadventura.dtos.VwMetodoDto;
 import com.neoadventura.entities.Metodo;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.exceptions.NotFoundException;
@@ -22,15 +22,15 @@ public class MetodoServiceImpl implements MetodoService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public MetodoDto getMetodoById(Long id) throws NeoAdventuraException {
-        return modelMapper.map(getMetodoEntityById(id), MetodoDto.class);
+    public VwMetodoDto getMetodoById(Long id) throws NeoAdventuraException {
+        return modelMapper.map(getMetodoEntityById(id), VwMetodoDto.class);
     }
 
     @Override
-    public List<MetodoDto> getMetodos() throws NeoAdventuraException {
+    public List<VwMetodoDto> getMetodos() throws NeoAdventuraException {
         List<Metodo> metodosEntity = metodoRepository.findAll();
 
-        return metodosEntity.stream().map(rol -> modelMapper.map(rol, MetodoDto.class))
+        return metodosEntity.stream().map(rol -> modelMapper.map(rol, VwMetodoDto.class))
                 .collect(Collectors.toList());
     }
 

@@ -1,6 +1,6 @@
 package com.neoadventura.controllers;
 
-import com.neoadventura.dtos.RegionDto;
+import com.neoadventura.dtos.VwRegionDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.RegionService;
@@ -19,7 +19,7 @@ public class RegionController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/regions/{regionId}")
-    public NeoAdventuraResponse<RegionDto> getRegionById(@PathVariable Long regionId)
+    public NeoAdventuraResponse<VwRegionDto> getRegionById(@PathVariable Long regionId)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 regionService.getRegionById(regionId));
@@ -27,7 +27,7 @@ public class RegionController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/regions")
-    public NeoAdventuraResponse<List<RegionDto>> getRegions()
+    public NeoAdventuraResponse<List<VwRegionDto>> getRegions()
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 regionService.getRegions());

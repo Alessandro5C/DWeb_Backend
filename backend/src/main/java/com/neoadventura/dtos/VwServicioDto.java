@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class ServicioDto {
+public class VwServicioDto {
     private Long id;
     private String name;
     private String description;

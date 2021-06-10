@@ -1,6 +1,6 @@
 package com.neoadventura.services.impl;
 
-import com.neoadventura.dtos.ModalidadDto;
+import com.neoadventura.dtos.VwModalidadDto;
 import com.neoadventura.entities.Modalidad;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.exceptions.NotFoundException;
@@ -22,14 +22,14 @@ public class ModalidadServiceImpl implements ModalidadService {
     private static final ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public ModalidadDto getModalidadById(Long modalidadId) throws NeoAdventuraException {
-        return modelMapper.map(getModalidadEntity(modalidadId), ModalidadDto.class);
+    public VwModalidadDto getModalidadById(Long modalidadId) throws NeoAdventuraException {
+        return modelMapper.map(getModalidadEntity(modalidadId), VwModalidadDto.class);
     }
 
     @Override
-    public List<ModalidadDto> getModalidades() throws NeoAdventuraException {
+    public List<VwModalidadDto> getModalidades() throws NeoAdventuraException {
         List<Modalidad> modalidadesEntity = modalidadRepository.findAll();
-        return modalidadesEntity.stream().map(restaurant -> modelMapper.map(restaurant, ModalidadDto.class))
+        return modalidadesEntity.stream().map(restaurant -> modelMapper.map(restaurant, VwModalidadDto.class))
                 .collect(Collectors.toList());
     }
 

@@ -1,6 +1,6 @@
 package com.neoadventura.controllers;
 
-import com.neoadventura.dtos.PagoDto;
+import com.neoadventura.dtos.CrPagoDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.PagoService;
@@ -19,15 +19,15 @@ public class PagoController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/pagos")
-    public NeoAdventuraResponse<PagoDto> createPago(@RequestBody PagoDto pagoDto)
+    public NeoAdventuraResponse<CrPagoDto> createPago(@RequestBody CrPagoDto crPagoDto)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK),
-                "OK", pagoService.CreatePago(pagoDto));
+                "OK", pagoService.CreatePago(crPagoDto));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pagos/{pagoId}")
-    public NeoAdventuraResponse<PagoDto> getPagoById(@PathVariable Long pagoId)
+    public NeoAdventuraResponse<CrPagoDto> getPagoById(@PathVariable Long pagoId)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 pagoService.getPagoById(pagoId));
@@ -35,7 +35,7 @@ public class PagoController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pagos")
-    public NeoAdventuraResponse<List<PagoDto>> getPagos()
+    public NeoAdventuraResponse<List<CrPagoDto>> getPagos()
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 pagoService.getPagos());

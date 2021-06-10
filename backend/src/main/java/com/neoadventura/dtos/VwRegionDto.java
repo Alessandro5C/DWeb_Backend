@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PlataformaDto {
+public class VwRegionDto {
     private Long id;
     private String name;
+    //private Long paisId;
 }

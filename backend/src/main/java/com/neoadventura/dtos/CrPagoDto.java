@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class PagoDto {
+public class CrPagoDto {
     private Long id;
 
     private Date pay_date;

@@ -1,6 +1,6 @@
 package com.neoadventura.controllers;
 
-import com.neoadventura.dtos.MetodoDto;
+import com.neoadventura.dtos.VwMetodoDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.MetodoService;
@@ -19,7 +19,7 @@ public class MetodoController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/metodos/{metodoId}")
-    public NeoAdventuraResponse<MetodoDto> getMetodoById(@PathVariable Long metodoId)
+    public NeoAdventuraResponse<VwMetodoDto> getMetodoById(@PathVariable Long metodoId)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Succes",String.valueOf(HttpStatus.OK),"OK",
                 metodoService.getMetodoById(metodoId));
@@ -27,7 +27,7 @@ public class MetodoController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/metodos")
-    public NeoAdventuraResponse<List<MetodoDto>> getMetodos()
+    public NeoAdventuraResponse<List<VwMetodoDto>> getMetodos()
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Succes",String.valueOf(HttpStatus.OK),"OK",
                 metodoService.getMetodos());

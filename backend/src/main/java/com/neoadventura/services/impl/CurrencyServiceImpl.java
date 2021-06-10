@@ -1,6 +1,6 @@
 package com.neoadventura.services.impl;
 
-import com.neoadventura.dtos.CurrencyDto;
+import com.neoadventura.dtos.VwCurrencyDto;
 import com.neoadventura.entities.Currency;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.exceptions.NotFoundException;
@@ -22,15 +22,15 @@ public class CurrencyServiceImpl implements CurrencyService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public CurrencyDto getCurrencyById(Long id) throws NeoAdventuraException {
-        return modelMapper.map(getCurrencyEntityById(id), CurrencyDto.class);
+    public VwCurrencyDto getCurrencyById(Long id) throws NeoAdventuraException {
+        return modelMapper.map(getCurrencyEntityById(id), VwCurrencyDto.class);
     }
 
     @Override
-    public List<CurrencyDto> getCurrencys() throws NeoAdventuraException {
+    public List<VwCurrencyDto> getCurrencys() throws NeoAdventuraException {
         List<Currency> currencyEntity = currencyRepository.findAll();
 
-        return currencyEntity.stream().map(currency -> modelMapper.map(currency, CurrencyDto.class))
+        return currencyEntity.stream().map(currency -> modelMapper.map(currency, VwCurrencyDto.class))
                 .collect(Collectors.toList());
     }
 

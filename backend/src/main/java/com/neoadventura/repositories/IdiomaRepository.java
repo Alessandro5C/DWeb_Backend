@@ -1,6 +1,5 @@
 package com.neoadventura.repositories;
 
-import com.neoadventura.dtos.IdiomaDto;
 import com.neoadventura.entities.Idioma;
 import com.neoadventura.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;

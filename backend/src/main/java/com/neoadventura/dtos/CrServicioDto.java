@@ -7,7 +7,7 @@ import java.util.Currency;
 import java.util.Date;
 
 @Getter
-public class CreateServicioDto {
+public class CrServicioDto {
     private String name;
     private String description;
     private Date init_valid_date;

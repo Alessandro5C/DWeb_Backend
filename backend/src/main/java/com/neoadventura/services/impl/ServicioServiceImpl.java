@@ -1,7 +1,7 @@
 package com.neoadventura.services.impl;
 
-import com.neoadventura.dtos.CreateServicioDto;
-import com.neoadventura.dtos.ServicioDto;
+import com.neoadventura.dtos.CrServicioDto;
+import com.neoadventura.dtos.VwServicioDto;
 import com.neoadventura.entities.*;
 import com.neoadventura.exceptions.*;
 import com.neoadventura.repositories.*;
@@ -34,38 +34,38 @@ public class ServicioServiceImpl implements ServicioService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public ServicioDto CreateServicio(CreateServicioDto createServicioDto) throws NeoAdventuraException {
-        Usuario usuario = usuarioRepository.findById(createServicioDto.getUsuario_id())
+    public VwServicioDto CreateServicio(CrServicioDto crServicioDto) throws NeoAdventuraException {
+        Usuario usuario = usuarioRepository.findById(crServicioDto.getUsuario_id())
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "USUARIO_NOT_FOUND"));
 
         if (usuario.getRol().getId() == 1)
             throw new UnauthorizedException("401", "THIS ACCOUNT IS NOT ANFITRION");
 
-        Region region = regionRepository.findById(createServicioDto.getRegion_id())
+        Region region = regionRepository.findById(crServicioDto.getRegion_id())
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "REGION_NOT_FOUND"));
 
-        Plataforma plataforma = plataformaRepository.findById(createServicioDto.getPlataforma_id())
+        Plataforma plataforma = plataformaRepository.findById(crServicioDto.getPlataforma_id())
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "PLATAFORMA_NOT_FOUND"));
 
-        Modalidad modalidad = modalidadRepository.findById(createServicioDto.getModalidad_id())
+        Modalidad modalidad = modalidadRepository.findById(crServicioDto.getModalidad_id())
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "MODALIDAD_NOT_FOUND"));
 
         Servicio servicio = new Servicio();
 
         Boolean is_valid = false; //Validation section
-        if (createServicioDto.getName().length()>0 && createServicioDto.getDescription().length() > 0 &&
-            createServicioDto.getInit_valid_date().compareTo(usuarioRepository.getNow()) > 0 &&
-            createServicioDto.getEnd_valid_date().compareTo(createServicioDto.getInit_valid_date()) > 0 &&
-            createServicioDto.getPrice().compareTo(BigDecimal.valueOf(1)) > 0)
+        if (crServicioDto.getName().length()>0 && crServicioDto.getDescription().length() > 0 &&
+            crServicioDto.getInit_valid_date().compareTo(usuarioRepository.getNow()) > 0 &&
+            crServicioDto.getEnd_valid_date().compareTo(crServicioDto.getInit_valid_date()) > 0 &&
+            crServicioDto.getPrice().compareTo(BigDecimal.valueOf(1)) > 0)
             is_valid = true;
 
         if (!is_valid) throw new FormatException("304", "NOT MODIFIED");
 
-        servicio.setName(createServicioDto.getName());
-        servicio.setDescription(createServicioDto.getDescription());
-        servicio.setInit_valid_date(createServicioDto.getInit_valid_date());
-        servicio.setEnd_valid_date(createServicioDto.getEnd_valid_date());
-        servicio.setPrice(createServicioDto.getPrice());
+        servicio.setName(crServicioDto.getName());
+        servicio.setDescription(crServicioDto.getDescription());
+        servicio.setInit_valid_date(crServicioDto.getInit_valid_date());
+        servicio.setEnd_valid_date(crServicioDto.getEnd_valid_date());
+        servicio.setPrice(crServicioDto.getPrice());
         servicio.setModalidad(modalidad);
         servicio.setRegion(region);
         servicio.setPlataforma(plataforma);
@@ -76,47 +76,47 @@ public class ServicioServiceImpl implements ServicioService {
         } catch (Exception ex) {
             throw new InternalServerErrorException("INTERNAL_ERROR", "INTERNAL_ERROR");
         }
-        return modelMapper.map(getServicioEntity(servicio.getId()), ServicioDto.class);
+        return modelMapper.map(getServicioEntity(servicio.getId()), VwServicioDto.class);
     }
 
     @Override
-    public ServicioDto getServicioById(Long id) throws NeoAdventuraException {
+    public VwServicioDto getServicioById(Long id) throws NeoAdventuraException {
         Servicio servicio =getServicioEntity(id);
-        ServicioDto servicioDto = modelMapper.map(getServicioEntity(id), ServicioDto.class);
-        servicioDto.setModalidad_id(servicio.getModalidad().getId());
-        servicioDto.setPlataforma_id(servicio.getPlataforma().getId());
-        servicioDto.setRegion_id(servicio.getRegion().getId());
-        servicioDto.setUsuario_id(servicio.getUsuario().getId());
-        return servicioDto;
+        VwServicioDto vwServicioDto = modelMapper.map(getServicioEntity(id), VwServicioDto.class);
+        vwServicioDto.setModalidad_id(servicio.getModalidad().getId());
+        vwServicioDto.setPlataforma_id(servicio.getPlataforma().getId());
+        vwServicioDto.setRegion_id(servicio.getRegion().getId());
+        vwServicioDto.setUsuario_id(servicio.getUsuario().getId());
+        return vwServicioDto;
     }
 
     @Override
-    public List<ServicioDto> getServicios() throws NeoAdventuraException {
+    public List<VwServicioDto> getServicios() throws NeoAdventuraException {
         return getServicios(0L);
     }
 
     @Override
-    public List<ServicioDto> getServicios(Long usuario_id) throws NeoAdventuraException {
+    public List<VwServicioDto> getServicios(Long usuario_id) throws NeoAdventuraException {
         Usuario usuario = usuarioRepository.findById(usuario_id)
                 .orElseThrow(() -> new NotFoundException("NOTFOUND-404", "USUARIO_NOTFOUND-404"));
 
         List<Servicio> serviciosEntity = servicioRepository.findAll();
-        List<ServicioDto> servicioDtos = new ArrayList<>();
+        List<VwServicioDto> vwServicioDtos = new ArrayList<>();
 
         Servicio servicio;
-        ServicioDto servicioDto;
+        VwServicioDto vwServicioDto;
         for (int i = 0; i < serviciosEntity.size(); i++) {
             servicio = serviciosEntity.get(i);
             if (commonLanguage(servicio.getUsuario(), usuario)) {
-                servicioDto = modelMapper.map(servicio, ServicioDto.class);
-                servicioDto.setModalidad_id(servicio.getModalidad().getId());
-                servicioDto.setPlataforma_id(servicio.getPlataforma().getId());
-                servicioDto.setRegion_id(servicio.getRegion().getId());
-                servicioDto.setUsuario_id(servicio.getUsuario().getId());
-                servicioDtos.add(servicioDto);
+                vwServicioDto = modelMapper.map(servicio, VwServicioDto.class);
+                vwServicioDto.setModalidad_id(servicio.getModalidad().getId());
+                vwServicioDto.setPlataforma_id(servicio.getPlataforma().getId());
+                vwServicioDto.setRegion_id(servicio.getRegion().getId());
+                vwServicioDto.setUsuario_id(servicio.getUsuario().getId());
+                vwServicioDtos.add(vwServicioDto);
             }
         }
-        return servicioDtos;
+        return vwServicioDtos;
     }
 
     private Boolean commonLanguage(Usuario anfitrion, Usuario usuario) {

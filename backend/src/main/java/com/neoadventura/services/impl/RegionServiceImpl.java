@@ -1,7 +1,6 @@
 package com.neoadventura.services.impl;
 
-import com.neoadventura.dtos.PaisDto;
-import com.neoadventura.dtos.RegionDto;
+import com.neoadventura.dtos.VwRegionDto;
 import com.neoadventura.entities.Region;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.exceptions.NotFoundException;
@@ -22,14 +21,14 @@ public class RegionServiceImpl implements RegionService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public RegionDto getRegionById(Long id) throws NeoAdventuraException {
-        return modelMapper.map(getRegionEntity(id), RegionDto.class);
+    public VwRegionDto getRegionById(Long id) throws NeoAdventuraException {
+        return modelMapper.map(getRegionEntity(id), VwRegionDto.class);
     }
 
     @Override
-    public List<RegionDto> getRegions() throws NeoAdventuraException {
+    public List<VwRegionDto> getRegions() throws NeoAdventuraException {
         List<Region> regionsEntity = regionRepository.findAll();
-        return regionsEntity.stream().map(region -> modelMapper.map(region, RegionDto.class))
+        return regionsEntity.stream().map(region -> modelMapper.map(region, VwRegionDto.class))
                 .collect(Collectors.toList());
     }
 

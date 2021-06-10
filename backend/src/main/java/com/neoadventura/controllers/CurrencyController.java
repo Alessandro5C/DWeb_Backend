@@ -1,6 +1,6 @@
 package com.neoadventura.controllers;
 
-import com.neoadventura.dtos.CurrencyDto;
+import com.neoadventura.dtos.VwCurrencyDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.CurrencyService;
@@ -19,7 +19,7 @@ public class CurrencyController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/currencys/{currencyId}")
-    public NeoAdventuraResponse<CurrencyDto> getCurrencyById(@PathVariable Long currencyId)
+    public NeoAdventuraResponse<VwCurrencyDto> getCurrencyById(@PathVariable Long currencyId)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Succes",String.valueOf(HttpStatus.OK),"OK",
                 currencyService.getCurrencyById(currencyId));
@@ -27,7 +27,7 @@ public class CurrencyController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/currencys")
-    public NeoAdventuraResponse<List<CurrencyDto>> getCurrencys()
+    public NeoAdventuraResponse<List<VwCurrencyDto>> getCurrencys()
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Succes",String.valueOf(HttpStatus.OK),"OK",
                 currencyService.getCurrencys());

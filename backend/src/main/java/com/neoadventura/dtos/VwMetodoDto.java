@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ModalidadDto {
+public class VwMetodoDto {
     private Long id;
     private String name;
 

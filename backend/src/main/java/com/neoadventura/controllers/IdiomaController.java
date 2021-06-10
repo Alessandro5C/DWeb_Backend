@@ -1,6 +1,6 @@
 package com.neoadventura.controllers;
 
-import com.neoadventura.dtos.IdiomaDto;
+import com.neoadventura.dtos.VwIdiomaDto;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.IdiomaService;
@@ -19,7 +19,7 @@ public class IdiomaController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/idiomas/{idiomaId}")
-    public NeoAdventuraResponse<IdiomaDto> getIdiomaById(@PathVariable Long idiomaId)
+    public NeoAdventuraResponse<VwIdiomaDto> getIdiomaById(@PathVariable Long idiomaId)
             throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 idiomaService.getIdiomaById(idiomaId));
@@ -27,7 +27,7 @@ public class IdiomaController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/idiomas")
-    public NeoAdventuraResponse<List<IdiomaDto>> getIdiomas()
+    public NeoAdventuraResponse<List<VwIdiomaDto>> getIdiomas()
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 idiomaService.getIdiomas());
@@ -35,7 +35,7 @@ public class IdiomaController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/idiomas/usuario/{usuarioId}")
-    public NeoAdventuraResponse<List<IdiomaDto>> getIdiomaByUsuarioId(@PathVariable Long usuarioId)
+    public NeoAdventuraResponse<List<VwIdiomaDto>> getIdiomaByUsuarioId(@PathVariable Long usuarioId)
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 idiomaService.getIdiomasByUsuarioId(usuarioId));

@@ -3,9 +3,9 @@ package com.neoadventura.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class PaisDto {
+@Setter
+public class VwPlataformaDto {
     private Long id;
     private String name;
 }

@@ -1,7 +1,7 @@
 package com.neoadventura.services.impl;
 
-import com.neoadventura.dtos.CreateReviewDto;
-import com.neoadventura.dtos.ReviewDto;
+import com.neoadventura.dtos.CrReviewDto;
+import com.neoadventura.dtos.VwReviewDto;
 import com.neoadventura.entities.*;
 import com.neoadventura.exceptions.InternalServerErrorException;
 import com.neoadventura.exceptions.NeoAdventuraException;
@@ -31,35 +31,35 @@ public class ReviewServiceImpl implements ReviewService {
     private static final ModelMapper modelmapper= new ModelMapper();
 
     @Override
-    public List<ReviewDto> getReviews() throws NeoAdventuraException {
+    public List<VwReviewDto> getReviews() throws NeoAdventuraException {
         List<Review> reviewsEntity=reviewRepository.findAll();
-        List<ReviewDto> reviewDtos = reviewsEntity.stream().map(x->modelmapper.map(x,ReviewDto.class))
+        List<VwReviewDto> vwReviewDtos = reviewsEntity.stream().map(x->modelmapper.map(x, VwReviewDto.class))
                 .collect(Collectors.toList());
-        for (int i=0; i<reviewDtos.size();++i) {
-            reviewDtos.get(i).setServicio_id(reviewsEntity.get(i).getId().getServicioId());
-            reviewDtos.get(i).setUsuario_id(reviewsEntity.get(i).getId().getUsuarioId());
+        for (int i = 0; i< vwReviewDtos.size(); ++i) {
+            vwReviewDtos.get(i).setServicio_id(reviewsEntity.get(i).getId().getServicioId());
+            vwReviewDtos.get(i).setUsuario_id(reviewsEntity.get(i).getId().getUsuarioId());
         }
-        return reviewDtos;
+        return vwReviewDtos;
     }
 
     @Transactional
     @Override
-    public ReviewDto CreateReview(CreateReviewDto createReviewDto) throws NeoAdventuraException {
-        Servicio servicio = getServicioEntity(createReviewDto.getServicio_id());
+    public VwReviewDto CreateReview(CrReviewDto crReviewDto) throws NeoAdventuraException {
+        Servicio servicio = getServicioEntity(crReviewDto.getServicio_id());
 
-        Usuario usuario = getUsuarioEntity(createReviewDto.getUsuario_id());
+        Usuario usuario = getUsuarioEntity(crReviewDto.getUsuario_id());
 
 
         Review review=new Review(
                 new ReviewKey(
-                        createReviewDto.getServicio_id(),
-                        createReviewDto.getUsuario_id()
+                        crReviewDto.getServicio_id(),
+                        crReviewDto.getUsuario_id()
                 ),
                 usuario,
                 servicio,
-                createReviewDto.getScore(),
-                createReviewDto.getDescription(),
-                createReviewDto.getReported()
+                crReviewDto.getScore(),
+                crReviewDto.getDescription(),
+                crReviewDto.getReported()
         );
 
         try {
@@ -67,7 +67,7 @@ public class ReviewServiceImpl implements ReviewService {
         }catch (Exception ex) {
             throw new InternalServerErrorException("INTERNAL_SERVER_ERROR", "INTERNAL_SERVER_ERROR");
         }
-        return modelmapper.map(getReviewEntity(review.getUsuario().getId(), review.getServicio().getId()),ReviewDto.class);
+        return modelmapper.map(getReviewEntity(review.getUsuario().getId(), review.getServicio().getId()), VwReviewDto.class);
     }
 
     private Usuario getUsuarioEntity(Long id) throws NeoAdventuraException {

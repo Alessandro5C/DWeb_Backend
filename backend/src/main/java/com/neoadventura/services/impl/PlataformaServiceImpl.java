@@ -1,8 +1,6 @@
 package com.neoadventura.services.impl;
 
-import com.neoadventura.dtos.ModalidadDto;
-import com.neoadventura.dtos.PaisDto;
-import com.neoadventura.dtos.PlataformaDto;
+import com.neoadventura.dtos.VwPlataformaDto;
 import com.neoadventura.entities.Plataforma;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.exceptions.NotFoundException;
@@ -24,14 +22,14 @@ public class PlataformaServiceImpl implements PlataformaService {
     private ModelMapper modelMapper = new ModelMapper();
 
     @Override
-    public PlataformaDto getPlataformaById(Long id) throws NeoAdventuraException {
-        return modelMapper.map(getPlataformaEntity(id), PlataformaDto.class);
+    public VwPlataformaDto getPlataformaById(Long id) throws NeoAdventuraException {
+        return modelMapper.map(getPlataformaEntity(id), VwPlataformaDto.class);
     }
 
     @Override
-    public List<PlataformaDto> getPlataformas() throws NeoAdventuraException {
+    public List<VwPlataformaDto> getPlataformas() throws NeoAdventuraException {
         List<Plataforma> plataformasEntity = plataformaRepository.findAll();
-        return plataformasEntity.stream().map(plataforma -> modelMapper.map(plataforma, PlataformaDto.class))
+        return plataformasEntity.stream().map(plataforma -> modelMapper.map(plataforma, VwPlataformaDto.class))
                 .collect(Collectors.toList());
     }
 

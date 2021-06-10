@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-public class ReviewDto {
+public class VwReviewDto {
 
     //private Long reviewKey_id;
     private Long usuario_id;
