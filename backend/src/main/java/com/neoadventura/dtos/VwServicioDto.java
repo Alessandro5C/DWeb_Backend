@@ -16,8 +16,8 @@ public class VwServicioDto {
     private Date init_valid_date;
     private Date end_valid_date;
     private BigDecimal price;
-    private Long modalidad_id;
-    private Long region_id;
-    private Long plataforma_id;
-    private Long usuario_id;
+    private String modalidad_name;
+    private String region_name;
+    private String plataforma_name;
+    private String usuario_name;
 }

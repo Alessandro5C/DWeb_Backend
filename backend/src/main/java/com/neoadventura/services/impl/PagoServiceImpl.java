@@ -1,6 +1,7 @@
 package com.neoadventura.services.impl;
 
 import com.neoadventura.dtos.CrPagoDto;
+import com.neoadventura.dtos.VwPagoDto;
 import com.neoadventura.entities.Currency;
 import com.neoadventura.entities.Metodo;
 import com.neoadventura.entities.Pago;
@@ -69,26 +70,26 @@ public class PagoServiceImpl implements PagoService {
     }
 
     @Override
-    public CrPagoDto getPagoById(Long id) throws NeoAdventuraException {
+    public VwPagoDto getPagoById(Long id) throws NeoAdventuraException {
         Pago pago =getPagoEntity(id);
-        CrPagoDto crPagoDto = modelMapper.map(getPagoEntity(id), CrPagoDto.class);
-        crPagoDto.setCurrency_id(pago.getCurrency().getId());
-        crPagoDto.setMetodo_id(pago.getMetodo().getId());
-        crPagoDto.setUsuario_id(pago.getUsuario().getId());
-        return crPagoDto;
+        VwPagoDto vwPagoDto = modelMapper.map(getPagoEntity(id), VwPagoDto.class);
+        vwPagoDto.setCurrency_name(pago.getCurrency().getId());
+        vwPagoDto.setMetodo_name(pago.getMetodo().getId());
+        vwPagoDto.setUsuario_name(pago.getUsuario().getId());
+        return vwPagoDto;
     }
 
     @Override
-    public List<CrPagoDto> getPagos() throws NeoAdventuraException {
+    public List<VwPagoDto> getPagos() throws NeoAdventuraException {
         List<Pago> pagosEntity = pagoRepository.findAll();
-        List<CrPagoDto> crPagoDtos = pagosEntity.stream().map(servicio -> modelMapper.map(servicio, CrPagoDto.class))
+        List<VwPagoDto> vwPagoDtos = pagosEntity.stream().map(servicio -> modelMapper.map(servicio, VwPagoDto.class))
                 .collect(Collectors.toList());
-        for (int i = 0; i < crPagoDtos.size(); i++) {
-            crPagoDtos.get(i).setCurrency_id(pagosEntity.get(i).getCurrency().getId());
-            crPagoDtos.get(i).setMetodo_id(pagosEntity.get(i).getMetodo().getId());
-            crPagoDtos.get(i).setUsuario_id(pagosEntity.get(i).getUsuario().getId());
+        for (int i = 0; i < vwPagoDtos.size(); i++) {
+            vwPagoDtos.get(i).setCurrency_name(pagosEntity.get(i).getCurrency().getId());
+            vwPagoDtos.get(i).setMetodo_name(pagosEntity.get(i).getMetodo().getId());
+            vwPagoDtos.get(i).setUsuario_name(pagosEntity.get(i).getUsuario().getId());
         }
-        return crPagoDtos;
+        return vwPagoDtos;
     }
 
     private Pago getPagoEntity(Long id) throws NeoAdventuraException {

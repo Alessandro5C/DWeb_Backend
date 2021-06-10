@@ -20,5 +20,5 @@ public class VwUsuarioDto {
     private BigDecimal monedero_oferta;
     private Boolean same_language;
     private Boolean banned;
-    private Long rol_id;
+    private String rol_name;
 }

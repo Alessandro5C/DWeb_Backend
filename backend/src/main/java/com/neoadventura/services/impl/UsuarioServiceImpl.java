@@ -15,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,23 +34,26 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public VwUsuarioDto CreateUsuario(CrUsuarioDto crUsuarioDto) throws NeoAdventuraException {
-        Rol rol = rolRepository.findById(crUsuarioDto.getRol_id())
-                .orElseThrow(() -> new NotFoundException("NOT-401-1", "ROL_IN_USER_NOT_FOUND"));
-
         Usuario usuario = new Usuario();
 
+        //When registered
+        usuario.setName(crUsuarioDto.getName());
+        usuario.setEmail(crUsuarioDto.getEmail());
+        usuario.setBirth_day(crUsuarioDto.getBirth_day());
 
-        usuario.setName(crUsuarioDto.getName()); //
-        usuario.setEmail(crUsuarioDto.getEmail()); //
-        usuario.setBirth_day(crUsuarioDto.getBirth_day()); //
-        usuario.setRegistered(usuarioRepository.getNow());
-        usuario.setSuscribed(false);
-        usuario.setMonedero_virtual(crUsuarioDto.getMonedero_oferta()); //corregir más adelante
-        usuario.setMonedero_oferta(crUsuarioDto.getMonedero_oferta()); //
-        usuario.setSame_language(false);
+        //By default
         usuario.setBanned(false);
-        usuario.setRol(rol);
+        usuario.setSuscribed(false);
+        usuario.setSame_language(false);
+        usuario.setRol(getRolEntity(1L));
+        usuario.setRegistered(usuarioRepository.getNow());
 
+        usuario.setMonedero_virtual(BigDecimal.valueOf(0));
+        usuario.setMonedero_oferta(BigDecimal.valueOf(0));
+
+        //NOTE HERE IT LACKS OF VALIDATION OF AGE
+        if (!VerifiedEmail(usuario.getEmail()) || !(usuario.getName().length()>0))
+            throw new FormatException("301", "EMAIL, NOMBRE o AGE estan mal");
 
         try {
             usuarioRepository.save(usuario);
@@ -63,7 +67,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public VwUsuarioDto getUsuarioById(Long id) throws NeoAdventuraException {
         Usuario usuario = getUsuarioEntity(id);
         VwUsuarioDto vwUsuarioDto = modelMapper.map(usuario, VwUsuarioDto.class);
-        vwUsuarioDto.setRol_id(usuario.getRol().getId());
+        vwUsuarioDto.setRol_name(usuario.getRol().getName());
         return vwUsuarioDto;
     }
 
@@ -73,7 +77,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         List<VwUsuarioDto> vwUsuarioDtos = usuariosEntity.stream().map(usuario -> modelMapper.map(usuario, VwUsuarioDto.class))
                 .collect(Collectors.toList());
         for (int i = 0; i < vwUsuarioDtos.size(); i++) {
-            vwUsuarioDtos.get(i).setRol_id(usuariosEntity.get(i).getRol().getId());
+            vwUsuarioDtos.get(i).setRol_name(usuariosEntity.get(i).getRol().getName());
         }
         return vwUsuarioDtos;
     }
@@ -132,8 +136,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     public VwUsuarioDto updateUsuario(UpUsuarioDto upUsuarioDto) throws NeoAdventuraException {
         Usuario usuario = getUsuarioEntity(upUsuarioDto.getId());
 
-        Rol rol = rolRepository.findById(upUsuarioDto.getRol_id())
-                .orElseThrow(() -> new NotFoundException("NOT-401-1", "ROL_IN_USER_NOT_FOUND"));
+        Rol rol = getRolEntity(upUsuarioDto.getRol_id());
+
         Boolean is_valid = false;
         //Requirement to become an Anfitrion
         if ((usuario.getIdiomas().size()>0 || rol.getId()==1) &&
@@ -161,6 +165,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         return false;
     }
 
+    private Rol getRolEntity(Long rol_id) throws NeoAdventuraException {
+        return rolRepository.findById(rol_id)
+                .orElseThrow(() -> new NotFoundException("NOT-401-1", "ROL_IN_USER_NOT_FOUND"));
+    }
 
     private Usuario getUsuarioEntity(Long id) throws NeoAdventuraException {
         return usuarioRepository.findById(id)

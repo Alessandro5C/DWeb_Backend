@@ -83,10 +83,10 @@ public class ServicioServiceImpl implements ServicioService {
     public VwServicioDto getServicioById(Long id) throws NeoAdventuraException {
         Servicio servicio =getServicioEntity(id);
         VwServicioDto vwServicioDto = modelMapper.map(getServicioEntity(id), VwServicioDto.class);
-        vwServicioDto.setModalidad_id(servicio.getModalidad().getId());
-        vwServicioDto.setPlataforma_id(servicio.getPlataforma().getId());
-        vwServicioDto.setRegion_id(servicio.getRegion().getId());
-        vwServicioDto.setUsuario_id(servicio.getUsuario().getId());
+        vwServicioDto.setModalidad_name(servicio.getModalidad().getName());
+        vwServicioDto.setPlataforma_name(servicio.getPlataforma().getName());
+        vwServicioDto.setRegion_name(servicio.getRegion().getName());
+        vwServicioDto.setUsuario_name(servicio.getUsuario().getName());
         return vwServicioDto;
     }
 
@@ -109,10 +109,10 @@ public class ServicioServiceImpl implements ServicioService {
             servicio = serviciosEntity.get(i);
             if (commonLanguage(servicio.getUsuario(), usuario)) {
                 vwServicioDto = modelMapper.map(servicio, VwServicioDto.class);
-                vwServicioDto.setModalidad_id(servicio.getModalidad().getId());
-                vwServicioDto.setPlataforma_id(servicio.getPlataforma().getId());
-                vwServicioDto.setRegion_id(servicio.getRegion().getId());
-                vwServicioDto.setUsuario_id(servicio.getUsuario().getId());
+                vwServicioDto.setModalidad_name(servicio.getModalidad().getName());
+                vwServicioDto.setPlataforma_name(servicio.getPlataforma().getName());
+                vwServicioDto.setRegion_name(servicio.getRegion().getName());
+                vwServicioDto.setUsuario_name(servicio.getUsuario().getName());
                 vwServicioDtos.add(vwServicioDto);
             }
         }
