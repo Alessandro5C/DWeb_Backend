@@ -119,6 +119,28 @@ public class ServicioServiceImpl implements ServicioService {
         return vwServicioDtos;
     }
 
+    @Override
+    public List<VwServicioDto> getServiciosByAnfitrion(Long anfitrion_id) throws NeoAdventuraException {
+        Usuario usuario = usuarioRepository.findById(anfitrion_id)
+                .orElseThrow(() -> new NotFoundException("NOTFOUND-404", "ANFITRION_NOTFOUND-404"));
+
+        List<Servicio> serviciosEntity = servicioRepository.findAllByUsuario(usuario);
+        List<VwServicioDto> vwServicioDtos = new ArrayList<>();
+
+        Servicio servicio;
+        VwServicioDto vwServicioDto;
+        for (int i = 0; i < serviciosEntity.size(); i++) {
+            servicio = serviciosEntity.get(i);
+            vwServicioDto = modelMapper.map(servicio, VwServicioDto.class);
+            vwServicioDto.setModalidad_name(servicio.getModalidad().getName());
+            vwServicioDto.setPlataforma_name(servicio.getPlataforma().getName());
+            vwServicioDto.setRegion_name(servicio.getRegion().getName());
+            vwServicioDto.setUsuario_name(servicio.getUsuario().getName());
+            vwServicioDtos.add(vwServicioDto);
+        }
+        return vwServicioDtos;
+    }
+
     private Boolean commonLanguage(Usuario anfitrion, Usuario usuario) {
         //Verify if it's only visitor or has SameLanguage value as false
         if (usuario.getId()==0 || !usuario.getSame_language() || usuario.getIdiomas().size()==0)

@@ -37,7 +37,7 @@ public class ServicioController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/servicios")
-    public NeoAdventuraResponse<List<VwServicioDto>> getServicios()
+    public NeoAdventuraResponse<List<VwServicioDto>> getServiciosAsVisitor()
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 servicioService.getServicios());
@@ -45,10 +45,17 @@ public class ServicioController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/servicios/client/{usuarioId}")
-    public NeoAdventuraResponse<List<VwServicioDto>> getServiciosByAnfitrion(@PathVariable Long usuarioId)
+    public NeoAdventuraResponse<List<VwServicioDto>> getServicios(@PathVariable Long usuarioId)
             throws NeoAdventuraException{
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 servicioService.getServicios(usuarioId));
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/servicios/anfitrion/{anfitrionId}")
+    public NeoAdventuraResponse<List<VwServicioDto>> getServiciosByAnfitrion(@PathVariable Long anfitrionId)
+            throws NeoAdventuraException{
+        return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
+                servicioService.getServiciosByAnfitrion(anfitrionId));
+    }
 }

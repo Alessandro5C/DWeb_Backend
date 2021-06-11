@@ -116,6 +116,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         Usuario usuario = getUsuarioEntity(usuario_id);
 
+        if (usuario.getIdiomas().size()<2)
+            throw new FormatException("301", "WE CAN'T ALLOW U TO DELETE");
+
         usuario.delIdioma(idioma);
 
         Usuario saveUsuario = this.usuarioRepository.save(usuario);
