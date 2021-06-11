@@ -35,6 +35,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public VwUsuarioDto CreateUsuario(CrUsuarioDto crUsuarioDto) throws NeoAdventuraException {
         Usuario usuario = new Usuario();
+        Boolean is_valid = false;
 
         //When registered
         usuario.setName(crUsuarioDto.getName());
@@ -51,9 +52,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setMonedero_virtual(BigDecimal.valueOf(0));
         usuario.setMonedero_oferta(BigDecimal.valueOf(0));
 
-        //NOTE HERE IT LACKS OF VALIDATION OF AGE
-        if (!VerifiedEmail(usuario.getEmail()) || !(usuario.getName().length()>0))
-            throw new FormatException("301", "EMAIL, NOMBRE o AGE estan mal");
+        if ((VerifiedEmail(usuario.getEmail()) || usuario.getName().length()>0) &&
+            usuarioRepository.getYearDiff(usuario.getBirth_day()) > 18)
+            is_valid = true;
+
+        if (!is_valid) throw new FormatException("301", "EMAIL, NOMBRE o AGE estan mal");
 
         try {
             usuarioRepository.save(usuario);
