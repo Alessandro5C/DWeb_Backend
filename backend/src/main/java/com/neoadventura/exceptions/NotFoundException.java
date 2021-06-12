@@ -6,6 +6,10 @@ import org.springframework.http.HttpStatus;
 import java.util.Arrays;
 
 public class NotFoundException extends NeoAdventuraException {
+    public NotFoundException(ErrorDto data) {
+        super(data, HttpStatus.NOT_FOUND.value());
+    }
+
     public NotFoundException(String code,String message){
         super("404", HttpStatus.NOT_FOUND.value(), message);
     }

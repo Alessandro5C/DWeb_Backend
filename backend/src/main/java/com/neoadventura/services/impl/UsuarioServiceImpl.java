@@ -1,9 +1,6 @@
 package com.neoadventura.services.impl;
 
-import com.neoadventura.dtos.VwAnfitrionDto;
-import com.neoadventura.dtos.CrUsuarioDto;
-import com.neoadventura.dtos.UpUsuarioDto;
-import com.neoadventura.dtos.VwUsuarioDto;
+import com.neoadventura.dtos.*;
 import com.neoadventura.entities.*;
 import com.neoadventura.exceptions.FormatException;
 import com.neoadventura.exceptions.InternalServerErrorException;
@@ -52,11 +49,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setMonedero_virtual(BigDecimal.valueOf(0));
         usuario.setMonedero_oferta(BigDecimal.valueOf(0));
 
-        if ((VerifiedEmail(usuario.getEmail()) || usuario.getName().length()>0) &&
-            usuarioRepository.getYearDiff(usuario.getBirth_day()) > 18)
+        if (VerifiedEmail(usuario.getEmail()) && usuario.getName().length()>0 &&
+            usuarioRepository.getYearDiff(usuario.getBirth_day()) >= 18)
             is_valid = true;
 
-        if (!is_valid) throw new FormatException("301", "EMAIL, NOMBRE o AGE estan mal");
+        if (!is_valid) throw new FormatException("301", "NOMBRE o AGE estan mal");
 
         try {
             usuarioRepository.save(usuario);
@@ -101,8 +98,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public VwUsuarioDto addIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException {
-        Idioma idioma = idiomaRepository.findById(idioma_id)
-                .orElseThrow(() -> new NotFoundException("NOT-401-1", "IDIOMA_NOT_FOUND"));
+        Idioma idioma = getIdiomaEntity(idioma_id);
 
         Usuario usuario = getUsuarioEntity(usuario_id);
 
@@ -114,13 +110,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public VwUsuarioDto delIdioma(Long usuario_id, Long idioma_id) throws NeoAdventuraException {
-        Idioma idioma = idiomaRepository.findById(idioma_id)
-                .orElseThrow(() -> new NotFoundException("NOT-401-1", "IDIOMA_NOT_FOUND"));
+        Idioma idioma = getIdiomaEntity(idioma_id);
 
         Usuario usuario = getUsuarioEntity(usuario_id);
 
         if (usuario.getIdiomas().size()<2)
-            throw new FormatException("301", "WE CAN'T ALLOW U TO DELETE");
+            throw new FormatException("304", "HAVE TO HAVE 1 LANGUAGE SPECIFIED AT LEAST");
 
         usuario.delIdioma(idioma);
 
@@ -150,7 +145,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 VerifiedEmail(upUsuarioDto.getEmail()))
             is_valid = true;
 
-        if (!is_valid) throw new FormatException("304", "NOT MODIFIED");
+        if (!is_valid) throw new FormatException("304", "ANFITRION REQUIREMENT: HAVE AT LEAST 1 LANGUAGE");
 
         usuario.setNickname("@" + upUsuarioDto.getNickname());
         usuario.setEmail(upUsuarioDto.getEmail());
@@ -160,25 +155,34 @@ public class UsuarioServiceImpl implements UsuarioService {
         return modelMapper.map(saveUsuario, VwUsuarioDto.class);
     }
 
-    private Boolean VerifiedEmail(String email) {
+    private Boolean VerifiedEmail(String email) throws NeoAdventuraException {
         //In this case, it will only accept from Google, Outlook and Hotmail
         if (email.contains("@")) {
             String[] var = email.split("@");
-            return (var[1].contentEquals("gmail.com") ||
+            if (var[0].length()>0 && (
+                    var[1].contentEquals("gmail.com") ||
                     var[1].contentEquals("outlook.com") ||
-                    var[1].contentEquals("hotmail.com"));
+                    var[1].contentEquals("hotmail.com"
+                    )))
+                return true;
         }
-        return false;
+        throw new FormatException(new ErrorDto("EMAIL ISN'T CORRECT", "304"));
+    }
+
+
+    private Idioma getIdiomaEntity(Long idioma_id) throws NeoAdventuraException {
+        return idiomaRepository.findById(idioma_id)
+                .orElseThrow(() -> new NotFoundException("404", "IDIOMA_IN_USER_NOT_FOUND"));
     }
 
     private Rol getRolEntity(Long rol_id) throws NeoAdventuraException {
         return rolRepository.findById(rol_id)
-                .orElseThrow(() -> new NotFoundException("NOT-401-1", "ROL_IN_USER_NOT_FOUND"));
+                .orElseThrow(() -> new NotFoundException("404", "ROL_IN_USER_NOT_FOUND"));
     }
 
     private Usuario getUsuarioEntity(Long id) throws NeoAdventuraException {
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("NOTFOUND-404", "USUARIO_NOTFOUND-404"));
+                .orElseThrow(() -> new NotFoundException("404", "USUARIO_NOTFOUND-404"));
     }
 
 }

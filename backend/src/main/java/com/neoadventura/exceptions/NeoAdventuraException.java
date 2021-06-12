@@ -12,6 +12,12 @@ public class NeoAdventuraException extends Exception{
     private final int responseCode;
     private final List<ErrorDto> errorList=new ArrayList<>();
 
+    public NeoAdventuraException(ErrorDto errorDto, int responseCode) {
+        super(errorDto.getName());
+        this.code=errorDto.getValue();
+        this.responseCode=responseCode;
+    }
+
     public NeoAdventuraException(String code,int responseCode,String message){
         super(message);
         this.code=code;

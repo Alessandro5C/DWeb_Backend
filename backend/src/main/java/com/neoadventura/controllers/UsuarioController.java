@@ -1,10 +1,7 @@
 package com.neoadventura.controllers;
 
 
-import com.neoadventura.dtos.VwAnfitrionDto;
-import com.neoadventura.dtos.CrUsuarioDto;
-import com.neoadventura.dtos.UpUsuarioDto;
-import com.neoadventura.dtos.VwUsuarioDto;
+import com.neoadventura.dtos.*;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.UsuarioService;
@@ -52,6 +49,7 @@ public class UsuarioController {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
                 usuarioService.getAnfitrionById(anfitrionId));
     }
+
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/anfitriones")
