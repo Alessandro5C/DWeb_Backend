@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path="/neo-adventura"+"/v1")
 public class CurrencyController {
-
     @Autowired
     private CurrencyService currencyService;
 

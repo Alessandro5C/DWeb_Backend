@@ -13,6 +13,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/neo-adventura"+"/v1")
 public class PaisController {
 
