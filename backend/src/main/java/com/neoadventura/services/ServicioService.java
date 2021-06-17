@@ -12,4 +12,5 @@ public interface ServicioService {
     List<VwServicioDto> getServicios() throws NeoAdventuraException;
     List<VwServicioDto> getServicios(Long usuario_id) throws NeoAdventuraException;
     List<VwServicioDto> getServiciosByAnfitrion(Long anfitrion_id) throws NeoAdventuraException;
+    List<VwServicioDto> getServiciosByTag(Long usuario_id, String tag, Long tag_id) throws NeoAdventuraException;
 }

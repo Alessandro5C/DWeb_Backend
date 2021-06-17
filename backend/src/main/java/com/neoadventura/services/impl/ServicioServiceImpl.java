@@ -120,6 +120,50 @@ public class ServicioServiceImpl implements ServicioService {
     }
 
     @Override
+    public List<VwServicioDto> getServiciosByTag(Long usuario_id, String tag, Long tag_id) throws NeoAdventuraException {
+        Usuario usuario = usuarioRepository.findById(usuario_id)
+                .orElseThrow(() -> new NotFoundException("NOTFOUND-404", "USUARIO_NOTFOUND-404"));
+
+        List<Servicio> serviciosEntity;
+        switch (tag) {
+            case "Modalidad":
+                Modalidad modalidad = modalidadRepository.findById(tag_id)
+                        .orElseThrow(() -> new NotFoundException("NOT-401-1", "MODALIDAD_NOT_FOUND"));
+                serviciosEntity=servicioRepository.findAllByModalidad(modalidad);
+                break;
+            case "Plataforma":
+                Plataforma plataforma = plataformaRepository.findById(tag_id)
+                        .orElseThrow(() -> new NotFoundException("NOT-401-1", "PLATAFORMA_NOT_FOUND"));
+                serviciosEntity=servicioRepository.findAllByPlataforma(plataforma);
+                break;
+            case "Region":
+                Region region = regionRepository.findById(tag_id)
+                        .orElseThrow(() -> new NotFoundException("NOT-401-1", "REGION_NOT_FOUND"));
+                serviciosEntity=servicioRepository.findAllByRegion(region);
+                break;
+            default:
+                serviciosEntity = new ArrayList<>();
+        }
+
+        Servicio servicio;
+        VwServicioDto vwServicioDto;
+        List<VwServicioDto> vwServicioDtos = new ArrayList<>();
+        for (int i = 0; i < serviciosEntity.size(); i++) {
+            servicio = serviciosEntity.get(i);
+            if (commonLanguage(servicio.getUsuario(), usuario)) {
+                vwServicioDto = modelMapper.map(servicio, VwServicioDto.class);
+                vwServicioDto.setModalidad_name(servicio.getModalidad().getName());
+                vwServicioDto.setPlataforma_name(servicio.getPlataforma().getName());
+                vwServicioDto.setRegion_name(servicio.getRegion().getName());
+                vwServicioDto.setUsuario_name(servicio.getUsuario().getName());
+                vwServicioDtos.add(vwServicioDto);
+            }
+        }
+
+        return vwServicioDtos;
+    }
+
+    @Override
     public List<VwServicioDto> getServiciosByAnfitrion(Long anfitrion_id) throws NeoAdventuraException {
         Usuario usuario = usuarioRepository.findById(anfitrion_id)
                 .orElseThrow(() -> new NotFoundException("NOTFOUND-404", "ANFITRION_NOTFOUND-404"));

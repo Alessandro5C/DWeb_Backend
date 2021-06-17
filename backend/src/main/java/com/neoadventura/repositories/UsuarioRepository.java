@@ -1,5 +1,6 @@
 package com.neoadventura.repositories;
 
+import com.neoadventura.entities.Rol;
 import com.neoadventura.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -7,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
@@ -21,4 +24,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
             nativeQuery = true)
     Long getYearDiff(Date date);
 
+    List<Usuario> findAllByRol(Rol rol);
 }

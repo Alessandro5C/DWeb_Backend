@@ -2,10 +2,7 @@ package com.neoadventura.services.impl;
 
 import com.neoadventura.dtos.*;
 import com.neoadventura.entities.*;
-import com.neoadventura.exceptions.FormatException;
-import com.neoadventura.exceptions.InternalServerErrorException;
-import com.neoadventura.exceptions.NeoAdventuraException;
-import com.neoadventura.exceptions.NotFoundException;
+import com.neoadventura.exceptions.*;
 import com.neoadventura.repositories.*;
 import com.neoadventura.services.UsuarioService;
 import org.modelmapper.ModelMapper;
@@ -84,13 +81,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public VwAnfitrionDto getAnfitrionById(Long id) throws NeoAdventuraException {
-        VwAnfitrionDto vwAnfitrionDto = modelMapper.map(getUsuarioEntity(id), VwAnfitrionDto.class);
+        Usuario usuarioEntity = getUsuarioEntity(id);
+        if (usuarioEntity.getRol().getId()!=2)
+            throw new UnauthorizedException(new ErrorDto("THE USER EXITS BUT HAS NOT AUTHORIZED TO SHARE ITS PROFILE", "401"));
+        VwAnfitrionDto vwAnfitrionDto = modelMapper.map(usuarioEntity, VwAnfitrionDto.class);
         return vwAnfitrionDto;
     }
 
     @Override
     public List<VwAnfitrionDto> getAnfitriones() throws NeoAdventuraException {
-        List<Usuario> usuariosEntity = usuarioRepository.findAll();
+        List<Usuario> usuariosEntity = usuarioRepository.findAllByRol(getRolEntity(2L));
         List<VwAnfitrionDto> vwAnfitrionDtos = usuariosEntity.stream().map(usuario -> modelMapper.map(usuario, VwAnfitrionDto.class))
                 .collect(Collectors.toList());
         return vwAnfitrionDtos;
