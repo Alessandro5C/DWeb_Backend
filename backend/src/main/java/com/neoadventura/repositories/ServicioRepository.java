@@ -15,5 +15,5 @@ public interface ServicioRepository extends JpaRepository<Servicio,Long> {
     List<Servicio> findAllByModalidad(Modalidad modalidad);
     List<Servicio> findAllByPlataforma(Plataforma plataforma);
     List<Servicio> findAllByRegion(Region region);
-    List<Servicio> findAllByPais(Pais pais);
+//    List<Servicio> findAllByPais(Pais pais);
 }
