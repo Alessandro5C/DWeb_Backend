@@ -35,6 +35,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuario.setName(crUsuarioDto.getName());
         usuario.setEmail(crUsuarioDto.getEmail());
         usuario.setBirth_day(crUsuarioDto.getBirth_day());
+        usuario.setImg(crUsuarioDto.getImg());
 
         //By default
         usuario.setBanned(false);
@@ -136,7 +137,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public VwUsuarioDto updateUsuario(UpUsuarioDto upUsuarioDto) throws NeoAdventuraException {
         Usuario usuario = getUsuarioEntity(upUsuarioDto.getId());
-
         Rol rol = getRolEntity(upUsuarioDto.getRol_id());
 
         Boolean is_valid = false;
@@ -149,7 +149,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         usuario.setNickname("@" + upUsuarioDto.getNickname());
         usuario.setEmail(upUsuarioDto.getEmail());
+        usuario.setImg(upUsuarioDto.getImg());
         usuario.setRol(rol);
+
 
         Usuario saveUsuario = this.usuarioRepository.save(usuario);
         return modelMapper.map(saveUsuario, VwUsuarioDto.class);

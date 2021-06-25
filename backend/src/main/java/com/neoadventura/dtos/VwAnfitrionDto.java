@@ -11,5 +11,6 @@ public class VwAnfitrionDto {
     private String name;
     private String nickname;
     private Boolean banned;
+    private String img;
 //    private Long rol_id;
 }

@@ -11,6 +11,7 @@ import java.util.Date;
 public class VwUsuarioDto {
     private Long id;
     private String name;
+    private String img;
     private String nickname;
     private String email;
     private Date birth_day;

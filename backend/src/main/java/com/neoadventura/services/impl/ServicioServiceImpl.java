@@ -38,8 +38,10 @@ public class ServicioServiceImpl implements ServicioService {
         Usuario usuario = usuarioRepository.findById(crServicioDto.getUsuario_id())
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "USUARIO_NOT_FOUND"));
 
-        if (usuario.getRol().getId() == 1)
+        if (usuario.getRol().getId() == 1) {
+            System.out.println(usuario.getRol().getId());
             throw new UnauthorizedException("401", "THIS ACCOUNT IS NOT ANFITRION");
+        }
 
         Region region = regionRepository.findById(crServicioDto.getRegion_id())
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "REGION_NOT_FOUND"));
@@ -52,16 +54,26 @@ public class ServicioServiceImpl implements ServicioService {
 
         Servicio servicio = new Servicio();
 
-        Boolean is_valid = false; //Validation section
-        if (crServicioDto.getName().length()>0 && crServicioDto.getDescription().length() > 0 &&
-            crServicioDto.getInit_valid_date().compareTo(usuarioRepository.getNow()) > 0 &&
-            crServicioDto.getEnd_valid_date().compareTo(crServicioDto.getInit_valid_date()) > 0 &&
-            crServicioDto.getPrice().compareTo(BigDecimal.valueOf(1)) > 0)
-            is_valid = true;
-
-        if (!is_valid) throw new FormatException("304", "NOT MODIFIED");
+        //Validation section
+        if (crServicioDto.getName().length()>0 == false){
+            throw new FormatException("304", "LENGTH OF NAME < 0");
+        }
+        if(crServicioDto.getDescription().length() > 0 == false){
+            throw new FormatException("304", "LENGTH OF DESCRIPTION < 0");
+        }
+        if(crServicioDto.getInit_valid_date().compareTo(usuarioRepository.getNow()) > 0 == false){
+            throw new FormatException("304", "INIT VALID DATE FAILED");
+        }
+        if(crServicioDto.getEnd_valid_date().compareTo(crServicioDto.getInit_valid_date()) > 0 == false)
+        {
+            throw new FormatException("304", "end VALID DATE FAILED");
+        }
+        if(crServicioDto.getPrice().compareTo(BigDecimal.valueOf(1)) > 0 == false){
+            throw new FormatException("304", "PRICE FAILED");
+        }
 
         servicio.setName(crServicioDto.getName());
+        servicio.setImg(crServicioDto.getImg());
         servicio.setDescription(crServicioDto.getDescription());
         servicio.setInit_valid_date(crServicioDto.getInit_valid_date());
         servicio.setEnd_valid_date(crServicioDto.getEnd_valid_date());

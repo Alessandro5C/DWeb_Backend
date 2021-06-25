@@ -10,4 +10,5 @@ public class CrUsuarioDto {
     private String name;
     private String email;
     private Date birth_day;
+    private String img;
 }

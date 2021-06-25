@@ -43,6 +43,14 @@ public class Servicio {
     private String name;
 
     @Column(
+            name="img",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
+    private String img;
+
+
+    @Column(
             name="description",
             nullable = false,
             columnDefinition = "TEXT"

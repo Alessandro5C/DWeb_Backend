@@ -46,6 +46,13 @@ public class Usuario {
     private String name;
 
     @Column(
+            name="img",
+            nullable = true,
+            columnDefinition = "TEXT"
+    )
+    private String img;
+
+    @Column(
             name="nickname",
             nullable = true,
             columnDefinition = "VARCHAR(10)"

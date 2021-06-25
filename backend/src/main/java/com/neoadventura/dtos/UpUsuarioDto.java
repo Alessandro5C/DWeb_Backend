@@ -12,6 +12,7 @@ public class UpUsuarioDto {
     private String nickname;
     private String email;
     private Long rol_id;
+    private String img;
 //    private Boolean suscribed;
 //    private BigDecimal monedero_virtual;
 }

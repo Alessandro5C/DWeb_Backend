@@ -12,6 +12,7 @@ import java.util.Date;
 public class VwServicioDto {
     private Long id;
     private String name;
+    private String img;
     private String description;
     private Date init_valid_date;
     private Date end_valid_date;

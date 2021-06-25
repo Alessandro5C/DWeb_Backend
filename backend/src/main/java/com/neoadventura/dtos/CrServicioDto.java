@@ -9,6 +9,7 @@ import java.util.Date;
 @Getter
 public class CrServicioDto {
     private String name;
+    private String img;
     private String description;
     private Date init_valid_date;
     private Date end_valid_date;
