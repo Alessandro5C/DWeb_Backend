@@ -5,13 +5,17 @@ import com.neoadventura.dtos.*;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.responses.NeoAdventuraResponse;
 import com.neoadventura.services.UsuarioService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Api
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/neo-adventura"+"/v1")
 public class UsuarioController {
@@ -27,7 +31,7 @@ public class UsuarioController {
                 "OK", usuarioService.CreateUsuario(crUsuarioDto));
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value="Retrieve all existed Usuarios outcomes", notes="This Operation return all Usuarios outcomes")
     @GetMapping("/usuarios/{usuarioId}")
     public NeoAdventuraResponse<VwUsuarioDto> getUsuarioById(@PathVariable Long usuarioId)
             throws NeoAdventuraException {
@@ -35,12 +39,11 @@ public class UsuarioController {
                 usuarioService.getUsuarioById(usuarioId));
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/usuarios")
     public NeoAdventuraResponse<List<VwUsuarioDto>> getUsuarios()
-            throws NeoAdventuraException{
+            throws NeoAdventuraException {
         return new NeoAdventuraResponse<>("Success", String.valueOf(HttpStatus.OK), "OK",
-                usuarioService.getUsuarios());
+                        usuarioService.getUsuarios());
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -2,9 +2,11 @@ package com.neoadventura.exceptions;
 
 import com.neoadventura.dtos.ErrorDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Arrays;
 
+@ResponseStatus(HttpStatus.NOT_MODIFIED)
 public class FormatException extends NeoAdventuraException{
     public FormatException(ErrorDto data){
         super(data, HttpStatus.NOT_MODIFIED.value());

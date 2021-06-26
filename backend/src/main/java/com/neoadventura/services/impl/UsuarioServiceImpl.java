@@ -7,6 +7,7 @@ import com.neoadventura.repositories.*;
 import com.neoadventura.services.UsuarioService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -70,6 +71,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<VwUsuarioDto> getUsuarios() throws NeoAdventuraException {
         List<Usuario> usuariosEntity = usuarioRepository.findAll();
         List<VwUsuarioDto> vwUsuarioDtos = usuariosEntity.stream().map(usuario -> modelMapper.map(usuario, VwUsuarioDto.class))
