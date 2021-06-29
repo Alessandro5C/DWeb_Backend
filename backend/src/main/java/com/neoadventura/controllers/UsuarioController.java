@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @Api
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RequestMapping(path = "/neo-adventura"+"/v1")
 public class UsuarioController {
 
