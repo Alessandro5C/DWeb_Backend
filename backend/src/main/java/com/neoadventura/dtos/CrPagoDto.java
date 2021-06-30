@@ -9,14 +9,12 @@ import java.util.Date;
 @Getter
 @Setter
 public class CrPagoDto {
-    private Long id;
-
     private Date pay_date;
     private BigDecimal mount;
 
     private Long metodo_id;
     private Long currency_id;
-    private Long usuario_id;
 
+    private Long usuario_id;
     private Long servicio_id;
 }

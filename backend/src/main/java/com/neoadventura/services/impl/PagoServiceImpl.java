@@ -2,17 +2,11 @@ package com.neoadventura.services.impl;
 
 import com.neoadventura.dtos.CrPagoDto;
 import com.neoadventura.dtos.VwPagoDto;
-import com.neoadventura.entities.Currency;
-import com.neoadventura.entities.Metodo;
-import com.neoadventura.entities.Pago;
-import com.neoadventura.entities.Usuario;
+import com.neoadventura.entities.*;
 import com.neoadventura.exceptions.InternalServerErrorException;
 import com.neoadventura.exceptions.NeoAdventuraException;
 import com.neoadventura.exceptions.NotFoundException;
-import com.neoadventura.repositories.CurrencyRepository;
-import com.neoadventura.repositories.MetodoRepository;
-import com.neoadventura.repositories.PagoRepository;
-import com.neoadventura.repositories.UsuarioRepository;
+import com.neoadventura.repositories.*;
 import com.neoadventura.services.PagoService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +30,9 @@ public class PagoServiceImpl implements PagoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private ServicioRepository servicioRepository;
+
     private static final ModelMapper modelMapper = new ModelMapper();
 
 
@@ -50,6 +47,8 @@ public class PagoServiceImpl implements PagoService {
         Usuario usuario = usuarioRepository.findById(crPagoDto.getUsuario_id())
                 .orElseThrow(() -> new NotFoundException("NOT-401-1", "USUARIO_NOT_FOUND"));
 
+        Servicio servicio = servicioRepository.findById(crPagoDto.getServicio_id())
+                .orElseThrow(() -> new NotFoundException("NOT-401-1", "SERVICIO_NOT_FOUND"));
 
         Pago pago = new Pago();
 
@@ -57,6 +56,7 @@ public class PagoServiceImpl implements PagoService {
         pago.setCurrency(currency);
         pago.setMetodo(metodo);
         pago.setUsuario(usuario);
+        pago.setServicio(servicio);
         pago.setPay_date(crPagoDto.getPay_date());
         pago.setMount(crPagoDto.getMount());
 
